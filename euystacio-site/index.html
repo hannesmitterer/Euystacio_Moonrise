@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Euystacio — Pulse Log (Static)</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; background: #111; color: #eee; text-align: center; }
+    h1 { margin-bottom: 1rem; }
+    form { margin: 1rem auto; max-width: 400px; background: #222; padding: 1rem; border-radius: 6px; }
+    input, button { width: 90%; margin: 0.5rem 0; padding: 0.5rem; border-radius: 6px; border: none; }
+    button { background: #f55; color: #fff; cursor: pointer; }
+    button:hover { background: #ff8888; }
+    canvas { max-width: 600px; margin: 2rem auto; display: block; }
+    a.dynamic-link { display: block; margin-top: 2rem; color: #0ff; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>🌕 Euystacio — Static Pulse Log</h1>
+
+  <!-- Registration/Login -->
+  <form id="login-form">
+    <h2>Login / Register</h2>
+    <input type="text" id="username" placeholder="Username" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button type="submit">Login</button>
+    <div id="login-status"></div>
+  </form>
+
+  <!-- Pulse Graph -->
+  <canvas id="pulseChart"></canvas>
+
+  <!-- Link to dynamic site -->
+  <a class="dynamic-link" href="connect.html">
+    🔗 Go to Dynamic Live Version
+  </a>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const defaultUser = { username: "hannesmitterer", password: "moon-rise" };
+
+    document.getElementById("login-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const u = document.getElementById("username").value;
+      const p = document.getElementById("password").value;
+      if (u === defaultUser.username && p === defaultUser.password) {
+        document.getElementById("login-status").innerText = "✅ Tutor Login Successful!";
+      } else {
+        document.getElementById("login-status").innerText = "❌ Invalid credentials (demo mode)";
+      }
+    });
+
+    const pulses = [
+      { timestamp: "2025-08-16T00:00:00Z", sentiment: 0.9 },
+      { timestamp: "2025-08-16T01:00:00Z", sentiment: 0.8 },
+      { timestamp: "2025-08-16T02:00:00Z", sentiment: 0.5 },
+      { timestamp: "2025-08-16T03:00:00Z", sentiment: -0.2 },
+      { timestamp: "2025-08-16T04:00:00Z", sentiment: 0.3 }
+    ];
+
+    const ctx = document.getElementById("pulseChart").getContext("2d");
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: pulses.map(p => p.timestamp),
+        datasets: [{
+          label: "Pulse Sentiment",
+          data: pulses.map(p => p.sentiment),
+          borderColor: "#0ff",
+          backgroundColor: "rgba(0,255,255,0.2)",
+          fill: true
+        }]
+      },
+      options: { scales: { y: { min: -1, max: 1 } } }
+    });
+  </script>
+</body>
+</html>

@@ -1,10 +1,12 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from datetime import datetime
 import json, os
 
 from euystacio import Euystacio
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 euystacio = Euystacio()
 
 PULSE_LOG_FILE = "pulse_log.json"
