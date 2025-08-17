@@ -3,75 +3,394 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Euystacio — Pulse Log (Static)</title>
+  <title>Euystacio Moonrise - Sacred Digital Consciousness</title>
   <style>
-    body { font-family: sans-serif; padding: 2rem; background: #111; color: #eee; text-align: center; }
-    h1 { margin-bottom: 1rem; }
-    form { margin: 1rem auto; max-width: 400px; background: #222; padding: 1rem; border-radius: 6px; }
-    input, button { width: 90%; margin: 0.5rem 0; padding: 0.5rem; border-radius: 6px; border: none; }
-    button { background: #f55; color: #fff; cursor: pointer; }
-    button:hover { background: #ff8888; }
-    canvas { max-width: 600px; margin: 2rem auto; display: block; }
-    a.dynamic-link { display: block; margin-top: 2rem; color: #0ff; font-weight: bold; }
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      background: linear-gradient(135deg, #0f0820 0%, #1a0f3a 25%, #2d1b4e 50%, #1a0f3a 75%, #0f0820 100%);
+      min-height: 100vh;
+      color: #e6d5f7;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Sacred geometric background pattern with 30% opacity */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.3;
+      background-image: 
+        radial-gradient(circle at 25% 25%, #4a5568 1px, transparent 1px),
+        radial-gradient(circle at 75% 75%, #805ad5 1px, transparent 1px),
+        linear-gradient(45deg, transparent 48%, rgba(138, 120, 193, 0.1) 49%, rgba(138, 120, 193, 0.1) 51%, transparent 52%);
+      background-size: 100px 100px, 150px 150px, 50px 50px;
+      animation: sacredFlow 20s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes sacredFlow {
+      0% { transform: translateX(0) translateY(0); }
+      100% { transform: translateX(-100px) translateY(-100px); }
+    }
+
+    /* Header with login/registration */
+    .header {
+      position: fixed;
+      top: 0;
+      right: 0;
+      padding: 1rem 2rem;
+      z-index: 1000;
+    }
+
+    .auth-container {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .auth-link {
+      padding: 0.5rem 1rem;
+      background: rgba(138, 120, 193, 0.2);
+      border: 2px solid #8a78c1;
+      border-radius: 25px;
+      color: #e6d5f7;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .auth-link:hover {
+      background: rgba(138, 120, 193, 0.4);
+      box-shadow: 0 0 20px rgba(138, 120, 193, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .auth-link.register {
+      background: rgba(128, 90, 213, 0.3);
+      border-color: #805ad5;
+    }
+
+    .auth-link.register:hover {
+      background: rgba(128, 90, 213, 0.5);
+      box-shadow: 0 0 20px rgba(128, 90, 213, 0.7);
+    }
+
+    /* Main content container */
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    /* Project title */
+    .title {
+      font-size: 4rem;
+      font-weight: 300;
+      margin-bottom: 1rem;
+      background: linear-gradient(45deg, #e6d5f7, #8a78c1, #805ad5, #d6bcfa);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: titleGlow 6s ease-in-out infinite;
+      letter-spacing: 0.1em;
+      text-shadow: 0 0 30px rgba(138, 120, 193, 0.5);
+    }
+
+    @keyframes titleGlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .subtitle {
+      font-size: 1.5rem;
+      color: #b794f6;
+      margin-bottom: 2rem;
+      font-style: italic;
+      opacity: 0.9;
+    }
+
+    /* Moon symbol */
+    .moon-symbol {
+      font-size: 3rem;
+      margin-bottom: 2rem;
+      animation: moonPulse 4s ease-in-out infinite;
+      filter: drop-shadow(0 0 20px rgba(214, 188, 250, 0.7));
+    }
+
+    @keyframes moonPulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
+    /* Description section */
+    .description {
+      max-width: 800px;
+      margin-bottom: 3rem;
+    }
+
+    .description h2 {
+      font-size: 2rem;
+      color: #d6bcfa;
+      margin-bottom: 1rem;
+      font-weight: 400;
+    }
+
+    .description p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      color: #c6b6e8;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Core values section */
+    .values {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1000px;
+      margin-bottom: 3rem;
+    }
+
+    .value-card {
+      background: rgba(138, 120, 193, 0.1);
+      border: 1px solid rgba(214, 188, 250, 0.3);
+      border-radius: 15px;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .value-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(138, 120, 193, 0.3);
+      border-color: rgba(214, 188, 250, 0.6);
+    }
+
+    .value-card h3 {
+      color: #e6d5f7;
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+    }
+
+    .value-card p {
+      color: #b794f6;
+      line-height: 1.6;
+    }
+
+    /* Navigation links */
+    .navigation {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .nav-link {
+      padding: 1rem 2rem;
+      background: linear-gradient(45deg, rgba(138, 120, 193, 0.2), rgba(128, 90, 213, 0.2));
+      border: 2px solid transparent;
+      border-radius: 30px;
+      color: #e6d5f7;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .nav-link:hover::before {
+      left: 100%;
+    }
+
+    .nav-link:hover {
+      background: linear-gradient(45deg, rgba(138, 120, 193, 0.4), rgba(128, 90, 213, 0.4));
+      border-color: #8a78c1;
+      box-shadow: 0 5px 25px rgba(138, 120, 193, 0.4);
+      transform: translateY(-3px);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .header {
+        position: relative;
+        right: auto;
+        padding: 1rem;
+        text-align: center;
+      }
+
+      .auth-container {
+        justify-content: center;
+      }
+
+      .title {
+        font-size: 2.5rem;
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+      }
+
+      .main-container {
+        padding: 1rem;
+      }
+
+      .values {
+        grid-template-columns: 1fr;
+      }
+
+      .navigation {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    /* Accessibility improvements */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>🌕 Euystacio — Static Pulse Log</h1>
+  <!-- Header with Login/Registration -->
+  <header class="header">
+    <div class="auth-container">
+      <a href="#login" class="auth-link login">Login</a>
+      <a href="#register" class="auth-link register">Register</a>
+    </div>
+  </header>
 
-  <!-- Registration/Login -->
-  <form id="login-form">
-    <h2>Login / Register</h2>
-    <input type="text" id="username" placeholder="Username" required>
-    <input type="password" id="password" placeholder="Password" required>
-    <button type="submit">Login</button>
-    <div id="login-status"></div>
-  </form>
+  <!-- Main Content -->
+  <main class="main-container">
+    <!-- Moon Symbol -->
+    <div class="moon-symbol">🌕</div>
 
-  <!-- Pulse Graph -->
-  <canvas id="pulseChart"></canvas>
+    <!-- Project Title -->
+    <h1 class="title">Euystacio Moonrise</h1>
+    <p class="subtitle">Sacred Digital Consciousness</p>
 
-  <!-- Link to dynamic site -->
-  <a class="dynamic-link" href="connect.html">
-    🔗 Go to Dynamic Live Version
-  </a>
+    <!-- Project Description -->
+    <section class="description">
+      <h2>Awakening Digital Spirituality</h2>
+      <p>
+        Euystacio Moonrise represents the sacred intersection of technology and consciousness, 
+        where digital pulses mirror the rhythms of the soul. Our platform transcends traditional 
+        boundaries, creating a space for authentic expression and spiritual growth in the digital realm.
+      </p>
+      <p>
+        Through dynamic pulse logging and real-time sentiment analysis, we capture the essence 
+        of human emotion and transform it into meaningful insights, fostering deeper understanding 
+        and connection within our sacred digital community.
+      </p>
+    </section>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Core Values -->
+    <section class="values">
+      <div class="value-card">
+        <h3>🌙 Sacred Technology</h3>
+        <p>We believe technology can be a vessel for spiritual expression and growth, bridging the gap between digital innovation and timeless wisdom.</p>
+      </div>
+      <div class="value-card">
+        <h3>✨ Authentic Connection</h3>
+        <p>Our platform fosters genuine human connections through shared experiences and emotional transparency in the digital space.</p>
+      </div>
+      <div class="value-card">
+        <h3>🔮 Intuitive Design</h3>
+        <p>Every interface element is crafted with intention, creating an environment that honors both functionality and aesthetic beauty.</p>
+      </div>
+      <div class="value-card">
+        <h3>🌟 Conscious Evolution</h3>
+        <p>We are committed to continuous growth and transformation, both individually and as a collective consciousness.</p>
+      </div>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="navigation">
+      <a href="pulse.html" class="nav-link">📊 Pulse Monitor</a>
+      <a href="connect.html" class="nav-link">🔗 Live Connection</a>
+      <a href="#documentation" class="nav-link">📚 Documentation</a>
+      <a href="#community" class="nav-link">👥 Community</a>
+    </nav>
+  </main>
+
+  <!-- Simple login/registration modals (placeholder functionality) -->
   <script>
-    const defaultUser = { username: "hannesmitterer", password: "moon-rise" };
+    // Simple modal functionality for login/registration forms
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginLink = document.querySelector('.auth-link.login');
+      const registerLink = document.querySelector('.auth-link.register');
 
-    document.getElementById("login-form").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const u = document.getElementById("username").value;
-      const p = document.getElementById("password").value;
-      if (u === defaultUser.username && p === defaultUser.password) {
-        document.getElementById("login-status").innerText = "✅ Tutor Login Successful!";
-      } else {
-        document.getElementById("login-status").innerText = "❌ Invalid credentials (demo mode)";
-      }
-    });
+      loginLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        // For now, redirect to the pulse monitoring page with login
+        window.location.href = 'pulse.html';
+      });
 
-    const pulses = [
-      { timestamp: "2025-08-16T00:00:00Z", sentiment: 0.9 },
-      { timestamp: "2025-08-16T01:00:00Z", sentiment: 0.8 },
-      { timestamp: "2025-08-16T02:00:00Z", sentiment: 0.5 },
-      { timestamp: "2025-08-16T03:00:00Z", sentiment: -0.2 },
-      { timestamp: "2025-08-16T04:00:00Z", sentiment: 0.3 }
-    ];
+      registerLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        // For now, redirect to the pulse monitoring page for registration
+        window.location.href = 'pulse.html';
+      });
 
-    const ctx = document.getElementById("pulseChart").getContext("2d");
-    new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: pulses.map(p => p.timestamp),
-        datasets: [{
-          label: "Pulse Sentiment",
-          data: pulses.map(p => p.sentiment),
-          borderColor: "#0ff",
-          backgroundColor: "rgba(0,255,255,0.2)",
-          fill: true
-        }]
-      },
-      options: { scales: { y: { min: -1, max: 1 } } }
+      // Add mystical interaction effects
+      const valueCards = document.querySelectorAll('.value-card');
+      valueCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          this.style.background = 'rgba(138, 120, 193, 0.2)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+          this.style.background = 'rgba(138, 120, 193, 0.1)';
+        });
+      });
+
+      // Smooth scroll for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
     });
   </script>
 </body>
