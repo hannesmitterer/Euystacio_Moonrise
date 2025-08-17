@@ -23,30 +23,87 @@ This repository contains an enhanced Euystacio system with self-evolving AI kern
 - **Real-time Status:** Live system metrics and connection status
 - **Session Management:** Automatic timeout and security features
 
-## 🚀 Quick Start
+## 🚀 Quick Start - Production Deployment
 
 ### Option 1: Automated Deployment (Recommended)
 ```bash
-# Deploy everything with custom backend URL
-./deploy.sh --backend-url "https://your-backend.onrender.com"
+# Deploy everything with production backend URL
+./deploy.sh --backend-url "https://euystacio-moonrise.onrender.com/"
 
 # Or deploy specific components
 ./deploy.sh --component backend
 ./deploy.sh --component frontend
 ```
 
-### Option 2: Manual Setup
+### Option 2: Manual Production Setup
 ```bash
 # Extract components
 python3 setup.py --component all
 
-# Update backend URL in frontend
-# Edit deployed-frontend/config.js or use the UI
+# Backend is already configured for production in deployed-backend/
+# Frontend is already configured with production URL in deployed-frontend/config.js
 ```
 
-## 📁 Deployment Structure
+### Option 3: Direct Production Deployment
+1. **Backend**: Deploy `deployed-backend/` to Render.com as `euystacio-moonrise`
+2. **Frontend**: Deploy `deployed-frontend/` to GitHub Pages
+3. **Configuration**: URLs are pre-configured for production use
 
-After running the deployment script, you'll have:
+## 📁 Production Deployment Structure
+
+The repository is organized for immediate production deployment:
+
+- `deployed-backend/` - **Production-ready backend** for Render.com hosting
+  - Configured with `debug=False` for production
+  - Includes all necessary files: `app.py`, `euystacio.py`, `requirements.txt`
+  - Uses JSON file storage for MVP (upgradeable to database)
+- `deployed-frontend/` - **Production-ready frontend** for GitHub Pages hosting  
+  - Pre-configured with production backend URL: `https://euystacio-moonrise.onrender.com/`
+  - Includes enhanced UI with error handling and auto-discovery
+- `DEPLOYMENT.md` - **Comprehensive deployment guide** with step-by-step instructions
+- `API.md` - **Complete API documentation** for all endpoints
+
+## 🔧 Production Configuration
+
+### Backend Configuration
+The production backend is configured in `deployed-backend/app.py`:
+```python
+# Production settings
+app.run(host="0.0.0.0", port=5000, debug=False)
+
+euystacio_config = {
+    'memory_limit': 500,           # Maximum memory entries
+    'base_learning_rate': 0.12,    # Base learning rate
+    'adaptation_factor': 0.08,     # How quickly to adapt
+    'volatility_threshold': 0.25   # Threshold for volatility-based adjustments
+}
+```
+
+### Frontend Configuration
+Production frontend is configured in `deployed-frontend/config.js`:
+```javascript
+window.EuystacioConfig = {
+  backend: {
+    url: "https://euystacio-moonrise.onrender.com/",
+    fallbackUrls: ["http://localhost:5000"],
+    timeout: 10000,
+    maxRetries: 3
+  },
+  // ... additional production settings
+};
+```
+
+### Storage Configuration
+**Current (MVP)**: JSON file storage
+- Uses `pulse_log.json` for data persistence
+- Simple, reliable for MVP deployment
+- No database setup required
+
+**Future Upgrade Path**: Database storage
+- PostgreSQL recommended for production scale
+- SQLite for smaller deployments  
+- MongoDB for NoSQL approach
+- Easy migration path planned for future releases
 
 - `deployed-backend/` - Enhanced backend ready for hosting (Render, Railway, etc.)
 - `deployed-frontend/` - Enhanced frontend ready for web hosting (GitHub Pages, Netlify, etc.)

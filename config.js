@@ -9,7 +9,7 @@ window.EuystacioConfig = {
   // Backend Configuration
   backend: {
     // Primary backend URL - update this with your deployed backend URL
-    url: "https://euystacio-backend.onrender.com",
+    url: "https://euystacio-moonrise.onrender.com/",
     
     // Fallback URLs to try if primary fails
     fallbackUrls: [

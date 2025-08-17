@@ -118,7 +118,7 @@ Generated on: $(date)
 
 ## Configuration
 
-Backend URL in frontend: ${BACKEND_URL:-"https://your-backend-url.com"}
+Backend URL in frontend: ${BACKEND_URL:-"https://euystacio-moonrise.onrender.com/"}
 
 ## Testing
 1. Visit your frontend URL
