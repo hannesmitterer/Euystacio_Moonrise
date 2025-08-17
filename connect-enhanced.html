@@ -128,18 +128,6 @@
       border: 1px solid #ff5;
     }
 
-    /* Discovery panel */
-    .discovery-panel {
-      background: #333;
-      border-radius: 6px;
-      padding: 1rem;
-      margin: 1rem auto;
-      max-width: 600px;
-      text-align: left;
-      display: none;
-    }
-    .discovery-panel.show { display: block; }
-    
     /* Backend URL input */
     .backend-config {
       background: #333;
@@ -206,13 +194,6 @@
       </div>
     </div>
 
-    <!-- Discovery Panel -->
-    <div id="discovery-panel" class="discovery-panel">
-      <h3>🔍 Backend Discovery</h3>
-      <p>Attempting to discover backend endpoints...</p>
-      <div id="discovery-results"></div>
-    </div>
-
     <!-- Chart -->
     <canvas id="pulseChart" style="display: none;"></canvas>
   </div>
@@ -270,17 +251,10 @@
       async attemptBackendDiscovery() {
         if (!this.config.features.autoDiscovery) return;
         
-        const discoveryPanel = document.getElementById('discovery-panel');
-        const resultsDiv = document.getElementById('discovery-results');
-        
-        discoveryPanel.classList.add('show');
-        
         const urlsToTry = [this.backendUrl, ...this.config.backend.fallbackUrls];
         
         for (const url of urlsToTry) {
           try {
-            resultsDiv.innerHTML += `<div>🔍 Trying ${url}...</div>`;
-            
             const response = await this.fetchWithTimeout(`${url}${this.config.endpoints.info}`, {
               method: 'GET',
               headers: { 'Accept': 'application/json' }
@@ -290,24 +264,18 @@
               const data = await response.json();
               this.backendUrl = url;
               this.updateConnectionStatus('connected');
-              
-              resultsDiv.innerHTML += `<div style="color: #5f5;">✅ Connected to ${url}</div>`;
-              resultsDiv.innerHTML += `<div>API: ${data.name} ${data.version}</div>`;
-              
-              setTimeout(() => {
-                discoveryPanel.classList.remove('show');
-              }, 3000);
-              
               this.updateCurrentBackendUrl();
+              
+              this.showMessage(`Connected to ${data.name} ${data.version}`, 'success');
               return;
             }
           } catch (error) {
-            resultsDiv.innerHTML += `<div style="color: #f55;">❌ Failed: ${error.message}</div>`;
+            // Continue to next URL
           }
         }
         
         this.updateConnectionStatus('disconnected');
-        this.showMessage('Failed to connect to any backend URL', 'error');
+        this.showMessage('Failed to connect to backend', 'error');
       }
       
       updateCurrentBackendUrl() {
@@ -538,11 +506,6 @@
           }
         } catch (error) {
           this.updateConnectionStatus('disconnected');
-          
-          if (this.config.features.debugMode) {
-            console.warn('Health check failed:', error);
-          }
-          
           return false;
         }
       }
@@ -602,10 +565,6 @@
           
         } catch (error) {
           this.showMessage(`Failed to load pulse data: ${error.message}`, 'error');
-          
-          if (this.config.features.debugMode) {
-            console.error('Load pulses error:', error);
-          }
         }
       }
       
@@ -684,61 +643,6 @@
     document.addEventListener('DOMContentLoaded', () => {
       client = new EuystacioClient();
     });
-
-    document.getElementById("login-form").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const u = document.getElementById("username").value;
-      const p = document.getElementById("password").value;
-      if (u === defaultUser.username && p === defaultUser.password) {
-        document.getElementById("login-status").innerText = "✅ Tutor Login Successful!";
-        loggedIn = true;
-      } else {
-        document.getElementById("login-status").innerText = "❌ Invalid credentials";
-      }
-    });
-
-    document.getElementById("pulse-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      if (!loggedIn) { alert("Please log in first"); return; }
-
-      const event = document.getElementById("event").value;
-      const sentiment = parseFloat(document.getElementById("sentiment").value);
-      const timestamp = new Date().toISOString();
-
-      const newEntry = { event, sentiment, role: "tutor", user: "hannesmitterer", timestamp };
-      await fetch(`${BACKEND_URL}/pulse`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newEntry)
-      });
-
-      loadPulses();
-      document.getElementById("pulse-form").reset();
-    });
-
-    async function loadPulses() {
-      const res = await fetch(`${BACKEND_URL}/log`);
-      const data = await res.json();
-
-      const ctx = document.getElementById("pulseChart").getContext("2d");
-      new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: data.map(p => p.timestamp),
-          datasets: [{
-            label: "Pulse Sentiment",
-            data: data.map(p => p.sentiment),
-            borderColor: "#0ff",
-            backgroundColor: "rgba(0,255,255,0.2)",
-            fill: true
-          }]
-        },
-        options: { scales: { y: { min: -1, max: 1 } } }
-      });
-    }
-
-    loadPulses();
-    setInterval(loadPulses, 15000);
   </script>
 </body>
 </html>

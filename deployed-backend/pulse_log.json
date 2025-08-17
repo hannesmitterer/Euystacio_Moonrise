@@ -5,12 +5,5 @@
     "sentiment": 0.9,
     "role": "tutor",
     "user": "Seed-Bringer"
-  },
-  {
-    "timestamp": "2025-08-17T07:34:00.147681Z",
-    "event": "Test enhanced kernel",
-    "sentiment": 0.8,
-    "role": "tutor",
-    "user": "hannesmitterer"
   }
 ]
