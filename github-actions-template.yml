@@ -1,0 +1,42 @@
+# GitHub Actions Workflow for Euystacio Frontend Deployment
+
+# This is a sample workflow file for automatic deployment to GitHub Pages
+# Place this file at .github/workflows/deploy.yml in your frontend repository
+
+name: Deploy Euystacio Frontend to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Validate configuration
+      run: |
+        echo "🔍 Validating frontend configuration..."
+        if grep -q "euystacio-moonrise.onrender.com" config.js; then
+          echo "✅ Backend URL correctly configured"
+        else
+          echo "❌ Backend URL not found in config.js"
+          exit 1
+        fi
+        
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./
+        
+    - name: Deployment notification
+      run: |
+        echo "🚀 Frontend deployed successfully!"
+        echo "Visit your GitHub Pages URL to test the deployment"
+        echo "Remember to test the connection to: https://euystacio-moonrise.onrender.com/"
